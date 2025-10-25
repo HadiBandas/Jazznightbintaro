@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3B0066">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Proposal Acara: Jazz Fridays #RameinBintaro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -37,7 +40,7 @@
         }
         
         .section-title {
-            @apply text-4xl md:text-5xl font-extrabold text-white mb-12 text-center relative pb-4;
+            @apply text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-8 md:mb-12 text-center relative pb-4;
         }
         .section-title::after {
             content: '';
@@ -45,7 +48,7 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: 60px;
             height: 4px;
             background: linear-gradient(90deg, #FE3B5D 0%, #FDC700 100%);
             border-radius: 2px;
@@ -53,11 +56,11 @@
 
         /* PERUBAHAN BARU: Sub-judul yang lebih menonjol */
         .section-subtitle-main {
-            @apply text-2xl md:text-3xl text-white font-extrabold text-center mb-10 max-w-3xl mx-auto;
+            @apply text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-extrabold text-center mb-6 md:mb-10 max-w-3xl mx-auto px-4 leading-relaxed;
         }
 
         .btn-primary {
-            @apply inline-block bg-primary-accent text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 hover:bg-red-600 hover:scale-105;
+            @apply inline-block bg-primary-accent text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 hover:bg-red-600 hover:scale-105 touch-manipulation;
         }
         
         /* Navigasi */
@@ -128,9 +131,10 @@
             box-shadow: 0 0 25px rgba(253, 199, 0, 0.4);
         }
 
-        /* Flip Cards */
+        /* Flip Cards - Mobile Friendly */
         .flip-card-container {
             perspective: 1000px;
+            cursor: pointer;
         }
         .flip-card {
             position: relative;
@@ -139,7 +143,14 @@
             transition: transform 0.8s;
             transform-style: preserve-3d;
         }
-        .flip-card-container:hover .flip-card {
+        /* Desktop hover effect */
+        @media (hover: hover) and (pointer: fine) {
+            .flip-card-container:hover .flip-card {
+                transform: rotateY(180deg);
+            }
+        }
+        /* Mobile tap effect */
+        .flip-card-container.flipped .flip-card {
             transform: rotateY(180deg);
         }
         .flip-card-front, .flip-card-back {
@@ -162,9 +173,26 @@
         .flip-card-back {
             transform: rotateY(180deg);
         }
+        /* Mobile tap indicator */
+        @media (max-width: 768px) {
+            .flip-card-container::after {
+                content: 'Tap to flip';
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.75rem;
+                color: #FDC700;
+                opacity: 0.7;
+                pointer-events: none;
+            }
+        }
         
         /* Accordion styles (untuk Jadwal & Anggaran) */
-        .accordion-header { cursor: pointer; }
+        .accordion-header { 
+            cursor: pointer; 
+            touch-action: manipulation;
+        }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -177,7 +205,7 @@
         .marquee-container { overflow: hidden; position: relative; width: 100%; }
         .marquee-content {
             display: flex;
-            animation: marquee 30s linear infinite;
+            animation: marquee 45s linear infinite;
             will-change: transform;
         }
         .marquee-content > * {
@@ -220,6 +248,66 @@
             background: #ffdb4d; /* Kuning lebih terang */
         }
         
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            /* Better touch targets */
+            .nav-link {
+                padding: 12px 16px;
+                margin: 4px 0;
+                border-radius: 8px;
+            }
+            
+            /* Prevent zoom on input focus */
+            input, textarea, select {
+                font-size: 16px;
+            }
+            
+            /* Better spacing for mobile */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* iOS Safe Area Support */
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+        
+        /* Gallery Mobile Improvements */
+        .image-skeleton {
+            background: linear-gradient(90deg, #374151 25%, #4B5563 50%, #374151 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .mobile-tap-indicator {
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Disable hover effects on mobile for gallery images */
+        @media (max-width: 768px) {
+            .gallery-item:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            
+            /* Better touch feedback for mobile */
+            .gallery-item:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+        }
+        
     </style>
 </head>
 <body class="antialiased">
@@ -241,30 +329,30 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-card py-4 text-center">
-            <a href="#konsep" class="block py-2 nav-link">Konsep</a>
-            <a href="#gallery" class="block py-2 nav-link">Galeri</a> <!-- TAMBAH NAVLINK -->
-            <a href="#jadwal" class="block py-2 nav-link">Jadwal Acara</a>
-            <a href="#tenant" class="block py-2 nav-link">Tenant</a>
-            <a href="#passport" class="block py-2 nav-link">Jazz Passport</a>
-            <a href="#anggaran" class="block py-2 nav-link">Anggaran</a>
-            <a href="#kontak" class="block py-2 nav-link">Kontak</a> <!-- TAMBAH NAVLINK -->
+        <!-- Mobile Menu with Smooth Animation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-card py-4 text-center transform transition-all duration-300 ease-in-out opacity-0 translate-y-[-10px]">
+            <a href="#konsep" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Konsep</a>
+            <a href="#gallery" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Galeri</a>
+            <a href="#jadwal" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Jadwal Acara</a>
+            <a href="#tenant" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Tenant</a>
+            <a href="#passport" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Jazz Passport</a>
+            <a href="#anggaran" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Anggaran</a>
+            <a href="#kontak" class="block py-3 nav-link transition-colors duration-200 hover:bg-purple-800/20">Kontak</a>
         </div>
     </header>
 
     <!-- Hero Section -->
     <main class="container mx-auto px-6">
-        <section id="hero" class="text-center py-24 md:py-36 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#4C0080] via-[#3B0066] to-[#FE3B5D] opacity-10 blur-3xl z-0"></div>
-            <h2 class="text-5xl md:text-7xl font-extrabold leading-tight relative z-10">
+        <section id="hero" class="text-center py-16 md:py-36 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#4C0080] via-[#3B0066] to-[#FE3B5D] opacity-5 md:opacity-10 blur-3xl z-0"></div>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight relative z-10 px-4">
                 <span class="hero-gradient">Jazz Fridays: #RameinBintaro</span>
-                <span class="block text-4xl md:text-5xl mt-2 text-white">1 Tahun Heritage Lifestyle Hub</span>
+                <span class="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2 text-white">1 Tahun Heritage Lifestyle Hub</span>
             </h2>
-            <p class="mt-8 text-xl text-gray-300 max-w-4xl mx-auto relative z-10">
+            <p class="mt-6 md:mt-8 text-base sm:text-lg md:text-xl text-gray-300 max-w-4xl mx-auto relative z-10 px-4">
                 Sebuah kampanye pemasaran terintegrasi untuk merayakan ulang tahun pertama Heritage Lifestyle Hub, dirancang untuk memperkuat posisi kami sebagai destinasi gaya hidup terdepan di Bintaro dengan dinamika dan komunitas.
             </p>
-            <a href="#konsep" class="mt-12 btn-primary relative z-10">
+            <a href="#konsep" class="mt-8 md:mt-12 btn-primary relative z-10">
                 Explore The Vibe!
             </a>
             
@@ -288,8 +376,8 @@
         </section>
 
         <!-- ===== BAGIAN KONSEP INTI YANG DIKEMBALIKAN ===== -->
-        <section id="konsep" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="konsep" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">Konsep Inti & Rasional Strategis</h3>
                 
                 <div class="max-w-3xl mx-auto">
@@ -300,7 +388,7 @@
                     Mengubah perayaan satu hari menjadi aktivasi sebulan penuh untuk menciptakan dampak berkelanjutan dan membangun komunitas yang loyal, penuh energi dan kolaborasi.
                 </h4>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     <!-- Card 1 -->
                     <div class="flip-card-container">
                         <div class="flip-card">
@@ -355,19 +443,29 @@
         <!-- ===== AKHIR BAGIAN KONSEP INTI ===== -->
 
         <!-- ===== GALERI VIBE BARU (REVISI LAYOUT) ===== -->
-        <section id="gallery" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="gallery" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">DRAFT IMAGE - Galeri Vibe Mingguan</h3>
                 
                 <!-- Hero Poster Utama -->
                 <div class="mb-10 max-w-2xl mx-auto">
-                     <h4 class="section-subtitle-main !mb-6 !text-3xl">
+                     <h4 class="section-subtitle-main !mb-6 !text-2xl sm:!text-3xl">
                         DRAFT - Poster Utama
                     </h4>
                     <!-- Poster 5: #RameinBintaro (Hero) -->
-                    <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30">
+                    <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30 relative">
+                        <!-- Loading Skeleton -->
+                        <div class="image-skeleton absolute inset-0 bg-gray-700 animate-pulse rounded-lg"></div>
                         <!-- PERUBAHAN: Mengganti <div> dengan <img> agar bisa di-popup -->
-                        <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/HERO.webp" alt="Poster Utama #RameinBintaro" class="gallery-item w-full h-96 md:h-[450px] object-cover cursor-pointer">
+                        <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/HERO.webp" 
+                             alt="Poster Utama #RameinBintaro" 
+                             class="gallery-item w-full h-64 sm:h-80 md:h-[450px] object-cover cursor-pointer relative z-10"
+                             loading="lazy"
+                             onload="this.parentElement.querySelector('.image-skeleton').style.display='none'">
+                        <!-- Mobile Tap Indicator -->
+                        <div class="mobile-tap-indicator absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded md:hidden">
+                            Tap to enlarge
+                        </div>
                     </div>
                 </div>
 
@@ -376,33 +474,73 @@
 
                 <!-- Grid Poster Mingguan -->
                 <div>
-                    <h4 class="section-subtitle-main !mb-10 !text-3xl">
+                    <h4 class="section-subtitle-main !mb-10 !text-2xl sm:!text-3xl">
                         DRAFT - Poster Mingguan
                     </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
                         
                         <!-- Poster 1: Celebration Night -->
-                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30">
+                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30 relative">
+                            <!-- Loading Skeleton -->
+                            <div class="image-skeleton absolute inset-0 bg-gray-700 animate-pulse rounded-lg"></div>
                             <!-- PERUBAHAN: Mengganti <div> dengan <img> -->
-                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W1.webp" alt="Poster Minggu 1: The Celebration Night" class="gallery-item w-full h-96 md:h-[450px] object-cover cursor-pointer">
+                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W1.webp" 
+                                 alt="Poster Minggu 1: The Celebration Night" 
+                                 class="gallery-item w-full h-80 md:h-[450px] object-cover cursor-pointer relative z-10"
+                                 loading="lazy"
+                                 onload="this.parentElement.querySelector('.image-skeleton').style.display='none'">
+                            <!-- Mobile Tap Indicator -->
+                            <div class="mobile-tap-indicator absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded md:hidden">
+                                Tap to enlarge
+                            </div>
                         </div>
 
                         <!-- Poster 2: Wellness -->
-                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30">
+                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30 relative">
+                            <!-- Loading Skeleton -->
+                            <div class="image-skeleton absolute inset-0 bg-gray-700 animate-pulse rounded-lg"></div>
                             <!-- PERUBAHAN: Mengganti <div> dengan <img> -->
-                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W2.webp" alt="Poster Minggu 2: Wellness & Wind Down" class="gallery-item w-full h-96 md:h-[450px] object-cover cursor-pointer">
+                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W2.webp" 
+                                 alt="Poster Minggu 2: Wellness & Wind Down" 
+                                 class="gallery-item w-full h-80 md:h-[450px] object-cover cursor-pointer relative z-10"
+                                 loading="lazy"
+                                 onload="this.parentElement.querySelector('.image-skeleton').style.display='none'">
+                            <!-- Mobile Tap Indicator -->
+                            <div class="mobile-tap-indicator absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded md:hidden">
+                                Tap to enlarge
+                            </div>
                         </div>
 
                         <!-- Poster 3: Family -->
-                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30">
+                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30 relative">
+                            <!-- Loading Skeleton -->
+                            <div class="image-skeleton absolute inset-0 bg-gray-700 animate-pulse rounded-lg"></div>
                             <!-- PERUBAHAN: Mengganti <div> dengan <img> -->
-                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W3-1.webp" alt="Poster Minggu 3: Family Vibes" class="gallery-item w-full h-96 md:h-[450px] object-cover cursor-pointer">
+                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W3-1.webp" 
+                                 alt="Poster Minggu 3: Family Vibes" 
+                                 class="gallery-item w-full h-80 md:h-[450px] object-cover cursor-pointer relative z-10"
+                                 loading="lazy"
+                                 onload="this.parentElement.querySelector('.image-skeleton').style.display='none'">
+                            <!-- Mobile Tap Indicator -->
+                            <div class="mobile-tap-indicator absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded md:hidden">
+                                Tap to enlarge
+                            </div>
                         </div>
 
                         <!-- Poster 4: Grand Finale -->
-                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30">
+                        <div class="w-full rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-secondary-accent/30 relative">
+                            <!-- Loading Skeleton -->
+                            <div class="image-skeleton absolute inset-0 bg-gray-700 animate-pulse rounded-lg"></div>
                             <!-- PERUBAHAN: Mengganti <div> dengan <img> -->
-                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W4.webp" alt="Poster Minggu 4: Grand Finale" class="gallery-item w-full h-96 md:h-[450px] object-cover cursor-pointer">
+                            <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/W4.webp" 
+                                 alt="Poster Minggu 4: Grand Finale" 
+                                 class="gallery-item w-full h-80 md:h-[450px] object-cover cursor-pointer relative z-10"
+                                 loading="lazy"
+                                 onload="this.parentElement.querySelector('.image-skeleton').style.display='none'">
+                            <!-- Mobile Tap Indicator -->
+                            <div class="mobile-tap-indicator absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded md:hidden">
+                                Tap to enlarge
+                            </div>
                         </div>
 
                     </div>
@@ -413,16 +551,17 @@
         <!-- ===== AKHIR GALERI VIBE (REVISI) ===== -->
 
         <!-- Jadwal Aktivasi Mingguan (Timeline) -->
-        <section id="jadwal" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="jadwal" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">Jadwal Aktivasi Mingguan Penuh Vibe</h3>
                 
                 <h4 class="section-subtitle-main">
                     Setiap Jumat di bulan November merayakan dimensi gaya hidup yang berbeda. Klik setiap jadwal untuk melihat detailnya!
                 </h4>
                 
-                <div class="relative max-w-4xl mx-auto space-y-4">
-                    <div class="absolute left-4 sm:left-1/2 top-4 bottom-4 w-1 -ml-0.5 bg-[#3B0066] border-2 border-border-card rounded-full hidden sm:block"></div>
+                <div class="relative max-w-4xl mx-auto space-y-6 md:space-y-4">
+                    <!-- Mobile: Vertical line on left, Desktop: Centered line -->
+                    <div class="absolute left-6 sm:left-1/2 top-4 bottom-4 w-1 -ml-0.5 bg-[#3B0066] border-2 border-border-card rounded-full hidden sm:block"></div>
                     <!-- Item 1 -->
                     <div class="accordion-item relative">
                         <div class="sm:flex items-center">
@@ -431,16 +570,16 @@
                                 <span class="text-tertiary-accent font-bold text-lg ml-4 sm:hidden">Minggu 1</span>
                             </div>
                             <div class="sm:w-1/2 sm:pl-8">
-                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-4 sm:mt-0">
-                                    <div class="accordion-header p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
-                                        <h4 class="text-xl font-bold text-white">THE CELEBRATION NIGHT</h4>
+                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-6 sm:mt-0 ml-12 sm:ml-0">
+                                    <div class="accordion-header p-4 md:p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
+                                        <h4 class="text-lg md:text-xl font-bold text-white">THE CELEBRATION NIGHT</h4>
                                         <svg class="accordion-icon w-6 h-6 text-secondary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
                                     <div class="accordion-content">
-                                        <div class="p-6 pt-0 text-gray-300">
+                                        <div class="p-4 md:p-6 pt-0 text-gray-300">
                                             <p class="mb-4">Perayaan ulang tahun meriah dengan alunan musik smooth jazz energetik dari <span class="font-semibold text-primary-accent">Solo Saxophone</span>.</p>
                                             <!-- PERUBAHAN DETAIL MINGGU 1 -->
-                                            <ul class="text-sm list-disc list-inside space-y-2">
+                                            <ul class="text-sm list-disc list-inside space-y-3">
                                                 <li>🎁 <strong class="text-white">Welcome Package (25 pax):</strong> Diberikan bagi tamu yang reservasi/registrasi & post IG Story tag @heritagelifestylehub di event pertama.</li>
                                                 <li>📸 <strong class="text-white">Photobooth:</strong> Ditempatkan di lobby depan untuk *awareness* traffic event.</li>
                                                 <li>🛍️ <strong class="text-white">Promo Tenant:</strong> Penawaran khusus dari tenant-tenant yang berpartisipasi.</li>
@@ -461,16 +600,16 @@
                                 <span class="text-tertiary-accent font-bold text-lg ml-4 sm:hidden">Minggu 2</span>
                             </div>
                             <div class="sm:w-1/2 sm:pr-8">
-                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-4 sm:mt-0">
-                                    <div class="accordion-header p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
-                                        <h4 class="text-xl font-bold text-white">WELLNESS & WIND DOWN</h4>
+                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-6 sm:mt-0 ml-12 sm:ml-0">
+                                    <div class="accordion-header p-4 md:p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
+                                        <h4 class="text-lg md:text-xl font-bold text-white">WELLNESS & WIND DOWN</h4>
                                         <svg class="accordion-icon w-6 h-6 text-secondary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
                                     <div class="accordion-content">
-                                        <div class="p-6 pt-0 text-gray-300">
+                                        <div class="p-4 md:p-6 pt-0 text-gray-300">
                                             <p class="mb-4">Ritual relaksasi pasca-olahraga dengan alunan chill jazz & neo-soul yang menenangkan dari <span class="font-semibold text-primary-accent">Solo Piano</span>.</p>
                                             <!-- PERUBAHAN DETAIL MINGGU 2 -->
-                                            <ul class="text-sm list-disc list-inside space-y-2">
+                                            <ul class="text-sm list-disc list-inside space-y-3">
                                                 <li>🧘 <strong class="text-white">Sesi Workout Khusus:</strong> Sesi gratis/khusus dari Anytime Fitness atau KX Pilates sebelum live jazz (misal: 17.00 - 18.00). <span class="text-tertiary-accent italic">*TBC</span></li>
                                                 <li>🥤 <strong class="text-white">Support Tenant:</strong> Peserta sesi workout akan mendapat support Ice Americano / Hot Long Black dari Wheels Coffee.</li>
                                                 <li>🌿 <strong class="text-white">Demo Aromaterapi:</strong> Demo singkat dari Good Vibes. <span class="text-tertiary-accent italic">*TBC</span></li>
@@ -490,16 +629,16 @@
                                 <span class="text-tertiary-accent font-bold text-lg ml-4 sm:hidden">Minggu 3</span>
                             </div>
                             <div class="sm:w-1/2 sm:pl-8">
-                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-4 sm:mt-0">
-                                    <div class="accordion-header p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
-                                        <h4 class="text-xl font-bold text-white">FAMILY VIBES</h4>
+                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-6 sm:mt-0 ml-12 sm:ml-0">
+                                    <div class="accordion-header p-4 md:p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
+                                        <h4 class="text-lg md:text-xl font-bold text-white">FAMILY VIBES</h4>
                                         <svg class="accordion-icon w-6 h-6 text-secondary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
                                     <div class="accordion-content">
-                                        <div class="p-6 pt-0 text-gray-300">
+                                        <div class="p-4 md:p-6 pt-0 text-gray-300">
                                              <p class="mb-4">Suasana hangat untuk keluarga dengan musik <span class="font-semibold text-primary-accent">jazz klasik & aransemen lagu Disney</span>.</p>
                                              <!-- PERUBAHAN DETAIL MINGGU 3 -->
-                                             <ul class="text-sm list-disc list-inside space-y-2">
+                                             <ul class="text-sm list-disc list-inside space-y-3">
                                                 <li>🎨 <strong class="text-white">Kids Activation:</strong> Adanya Workshop Kids Jazz di GRSB atau Kids Corner untuk aktivasi di Favo Toys. <span class="text-tertiary-accent italic">*TBC</span></li>
                                                 <li class="line-through text-gray-500">Sesi foto keluarga oleh fotografer profesional.</li>
                                                 <li class="line-through text-gray-500">Promo spesial menu anak-anak.</li>
@@ -519,16 +658,16 @@
                                 <span class="text-tertiary-accent font-bold text-lg ml-4 sm:hidden">Minggu 4</span>
                             </div>
                             <div class="sm:w-1/2 sm:pr-8">
-                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-4 sm:mt-0">
-                                    <div class="accordion-header p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
-                                        <h4 class="text-xl font-bold text-white">GRAND FINALE</h4>
+                                <div class="bg-[#3B0066] border border-card rounded-2xl overflow-hidden shadow-lg mt-6 sm:mt-0 ml-12 sm:ml-0">
+                                    <div class="accordion-header p-4 md:p-6 flex justify-between items-center transition-colors duration-300 hover:bg-purple-800/40">
+                                        <h4 class="text-lg md:text-xl font-bold text-white">GRAND FINALE</h4>
                                         <svg class="accordion-icon w-6 h-6 text-secondary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
                                     <div class="accordion-content">
-                                        <div class="p-6 pt-0 text-gray-300">
+                                        <div class="p-4 md:p-6 pt-0 text-gray-300">
                                              <p class="mb-4">Puncak perayaan dengan energi tinggi dari <span class="font-semibold text-primary-accent">Jazz Quartet</span>, acara penutup yang tak terlupakan.</p>
                                              <!-- PERUBAHAN DETAIL MINGGU 4 -->
-                                             <ul class="text-sm list-disc list-inside space-y-2">
+                                             <ul class="text-sm list-disc list-inside space-y-3">
                                                 <li>👗 <strong class="text-white">Mini Fashion Show:</strong> Diadakan di Heritage Factory Outlet Lt. 1 (siang hari). <span class="text-tertiary-accent italic">*TBC</span></li>
                                                 <li>🎸 <strong class="text-white">Live Performance GRSB:</strong> Penampilan murid Gilang Ramadhan Studio di HFO Lt. 1 (siang hari).<span class="text-tertiary-accent italic">*TBC</span></li>
                                                 <li>🏆 <strong class="text-white">Pengundian Grand Prize:</strong> Puncak acara pengundian 'Jazz Passport' (malam hari).</li>
@@ -545,25 +684,25 @@
         </section>
 
         <!-- Tenant Partisipan (Marquee) -->
-        <section id="tenant" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="tenant" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">Tenant Partisipan</h3>
                 <h4 class="section-subtitle-main">
                     Kolaborasi adalah inti dari #RameinBintaro. Acara ini didukung penuh oleh tenant-tenant luar biasa di Heritage Lifestyle Hub.
                 </h4>
                 <div class="marquee-container p-0 overflow-hidden">
-                    <div class="marquee-content py-8">
-                        <div class="flex items-center" style="gap: 5rem;">
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Wheels Coffee</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Heritage Factory Outlet</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Anytime Fitness</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Gilang Ramadhan Studio</span>
+                    <div class="marquee-content py-12">
+                        <div class="flex items-center" style="gap: 2rem;">
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Wheels Coffee</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Heritage Factory Outlet</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Anytime Fitness</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Gilang Ramadhan Studio</span>
                         </div>
-                        <div class="flex items-center" style="gap: 5rem;" aria-hidden="true">
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Wheels Coffee</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Heritage Factory Outlet</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Anytime Fitness</span>
-                            <span class="text-2xl font-bold text-gray-400 whitespace-nowrap">Gilang Ramadhan Studio</span>
+                        <div class="flex items-center" style="gap: 2rem;" aria-hidden="true">
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Wheels Coffee</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Heritage Factory Outlet</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Anytime Fitness</span>
+                            <span class="text-lg md:text-2xl font-bold text-gray-400 whitespace-nowrap">Gilang Ramadhan Studio</span>
                         </div>
                     </div>
                 </div>
@@ -571,35 +710,35 @@
         </section>
 
         <!-- Mekanisme Jazz Passport -->
-        <section id="passport" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="passport" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">Program "Jazz Passport": Eksplorasi Berhadiah!</h3>
                 <h4 class="section-subtitle-main">
                     Mekanisme engagement yang seru untuk mendorong transaksi, eksplorasi lintas tenant, dan memberikan apresiasi eksklusif bagi pelanggan setia dengan nuansa petualangan.
                 </h4>
-                <div class="grid md:grid-cols-3 gap-10 items-start"> <!-- UBAH GRID KE 3 KOLOM -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 items-start"> <!-- UBAH GRID KE 3 KOLOM -->
                     <!-- KOLOM 1: REWARD INSTAN -->
                     <div class="md:col-span-1">
-                        <h4 class="text-3xl font-bold text-white mb-4">Cara Kerja & Sistem Reward</h4>
+                        <h4 class="text-2xl md:text-3xl font-bold text-white mb-4">Cara Kerja & Sistem Reward</h4>
                         <p class="text-gray-300 mb-6">
                             Dapatkan stempel di 'Jazz Passport' Anda setiap hari Jumat untuk mendapatkan hadiah instan dan kesempatan memenangkan Grand Prize!
                         </p>
                         <div class="space-y-5">
                             <div class="flex items-center">
                                 <span class="bg-primary-accent text-white font-bold rounded-full w-8 h-8 text-lg flex items-center justify-center mr-4 flex-shrink-0 shadow-md">1</span>
-                                <span class="text-lg"><strong class="text-white">Stempel:</strong> Gratis Voucher Belanja Heritage 50k 🛍️</span>
+                                <span class="text-base md:text-lg"><strong class="text-white">Stempel:</strong> Gratis Voucher Belanja Heritage 50k 🛍️</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="bg-secondary-accent text-gray-900 font-bold rounded-full w-8 h-8 text-lg flex items-center justify-center mr-4 flex-shrink-0 shadow-md">2</span>
-                                <span class="text-lg"><strong class="text-white">Stempel:</strong> Gratis essential oil Good Vibes/ Trial AF / Trial KX / Voucher Favo *TBC 🌸</span>
+                                <span class="text-base md:text-lg"><strong class="text-white">Stempel:</strong> Gratis essential oil Good Vibes/ Trial AF / Trial KX / Voucher Favo *TBC 🌸</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="bg-tertiary-accent text-white font-bold rounded-full w-8 h-8 text-lg flex items-center justify-center mr-4 flex-shrink-0 shadow-md">3</span>
-                                <span class="text-lg"><strong class="text-white">Stempel:</strong> Gratis Brownie di Wheels ☕</span>
+                                <span class="text-base md:text-lg"><strong class="text-white">Stempel:</strong> Gratis Brownie di Wheels ☕</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="bg-primary-accent text-white font-bold rounded-full w-8 h-8 text-lg flex items-center justify-center mr-4 flex-shrink-0 shadow-md">4</span>
-                                <span class="text-lg"><strong class="text-white">Stempel:</strong> Kesempatan undian Grand Prize! ✨</span>
+                                <span class="text-base md:text-lg"><strong class="text-white">Stempel:</strong> Kesempatan undian Grand Prize! ✨</span>
                             </div>
                         </div>
                     </div>
@@ -607,20 +746,21 @@
                     <!-- KOLOM 2 BARU: PLACEHOLDER PASSPORT -->
                     <div class="md:col-span-1 flex justify-center items-center">
                          <div class="bg-[#3B0066] p-4 rounded-xl border-2 border-dashed border-tertiary-accent text-center shadow-lg w-full max-w-xs transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-primary-accent/30">
-                            <h5 class="font-extrabold text-2xl text-tertiary-accent mb-4">Contoh Jazz Passport</h5>
+                            <h5 class="font-extrabold text-xl md:text-2xl text-tertiary-accent mb-4">Contoh Jazz Passport</h5>
                             <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/Pass.webp" 
                                  alt="Contoh Kartu Jazz Passport" 
                                  class="gallery-item w-full object-cover rounded-lg cursor-pointer border border-card shadow-inner"
-                                 data-is-passport="true"> <!-- data attribute untuk identifikasi -->
+                                 data-is-passport="true"
+                                 loading="lazy"> <!-- data attribute untuk identifikasi -->
                             <p class="text-sm text-gray-400 mt-3">Kartu fisik dikumpulkan saat Grand Finale.</p>
                         </div>
                     </div>
                     
                     <!-- KOLOM 3: GRAND PRIZE -->
                     <div class="md:col-span-1">
-                        <div class="bg-[#3B0066] p-8 rounded-xl border-2 border-dashed border-secondary-accent text-center shadow-inner h-full flex flex-col justify-center">
-                            <h5 class="font-extrabold text-3xl text-secondary-accent mb-6">Grand Prize Pool!</h5>
-                            <ul class="space-y-4 text-lg">
+                        <div class="bg-[#3B0066] py-6 px-4 md:p-8 rounded-xl border-2 border-dashed border-secondary-accent text-center shadow-inner h-full flex flex-col justify-center">
+                            <h5 class="font-extrabold text-2xl md:text-3xl text-secondary-accent mb-6">Grand Prize Pool!</h5>
+                            <ul class="space-y-4 text-base md:text-lg">
                                 <li>
                                     <p class="font-semibold text-primary-accent">Juara 1</p>
                                     <p class="text-gray-200">1 Bulan Membership Gym + Voucher Rp 750.000</p>
@@ -639,8 +779,8 @@
                     
                     <!-- BARIS BAWAH: DETAIL MEKANISME -->
                     <div class="md:col-span-3 mt-10 pt-8 border-t border-dashed border-card">
-                        <h4 class="text-3xl font-bold text-white mb-6 text-center">Detail Mekanisme Stempel & Undian</h4>
-                        <div class="max-w-3xl mx-auto space-y-4 text-lg text-gray-200">
+                        <h4 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Detail Mekanisme Stempel & Undian</h4>
+                        <div class="max-w-3xl mx-auto space-y-3 text-base md:text-lg text-gray-200">
                             <div class="flex items-start">
                                 <span class="bg-secondary-accent text-gray-900 font-bold rounded-full w-6 h-6 text-base flex items-center justify-center mr-4 flex-shrink-0 shadow-md mt-1">1</span>
                                 <span>'Jazz Passport' fisik tersedia di <strong class="text-white">booth khusus</strong> setiap <strong class="text-white">hari Jumat</strong> selama periode event (pagi s.d. tutup toko).</span>
@@ -675,44 +815,45 @@
 
 
         <!-- ===== BAGIAN NARAHUBUNG ===== -->
-        <section id="kontak" class="py-20 scroll-mt-20">
-            <div class="bg-card p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
+        <section id="kontak" class="py-12 md:py-20 scroll-mt-20">
+            <div class="bg-card p-4 sm:p-6 md:p-10 rounded-2xl border border-card shadow-lg reveal">
                 <h3 class="section-title">Contact Person</h3>
                 <h4 class="section-subtitle-main">
                     Untuk informasi lebih lanjut, sponsorship, atau kolaborasi media, silakan hubungi:
                 </h4>
                 
-                <div class="max-w-4xl mx-auto bg-[#3B0066] border border-card rounded-2xl shadow-inner p-8 grid md:grid-cols-3 gap-8 items-center">
+                <div class="max-w-4xl mx-auto bg-[#3B0066] border border-card rounded-2xl shadow-inner p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center px-4">
                     <!-- Foto Placeholder -->
                     <div class="md:col-span-1 flex justify-center">
                         <img src="https://raw.githubusercontent.com/HadiBandas/Jazznightbintaro/main/Image/PP.webp" 
                              alt="Foto Hadi, Manager Marketing Heritage" 
-                             class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-secondary-accent shadow-lg">
+                             class="w-32 h-32 md:w-56 md:h-56 rounded-full object-cover border-4 border-secondary-accent shadow-lg"
+                             loading="lazy">
                     </div>
                     
                     <!-- Info Kontak -->
                     <div class="md:col-span-2 space-y-5">
-                        <h5 class="text-4xl font-bold text-white">Hadi</h5>
-                        <p class="text-2xl font-semibold text-secondary-accent -mt-2">Manager Marketing Heritage</p>
+                        <h5 class="text-2xl md:text-4xl font-bold text-white">Hadi</h5>
+                        <p class="text-lg md:text-2xl font-semibold text-secondary-accent -mt-2">Manager Marketing Heritage</p>
                         
                         <hr class="border-card border-dashed">
                         
                         <!-- WhatsApp -->
                         <div class="flex items-center gap-4">
                             <!-- Ikon WhatsApp (Inline SVG) -->
-                            <svg class="w-8 h-8 text-primary-accent flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <svg class="w-10 h-10 md:w-8 md:h-8 text-primary-accent flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M18.403 5.633C16.337 3.568 13.781 2.426 11.087 2.426C5.552 2.426 1.133 6.845 1.133 12.38c0 1.944.55 3.78 1.55 5.393L1 23l5.34-1.668a9.883 9.883 0 0 0 4.746 1.256h.001c5.534 0 9.953-4.418 9.953-9.953c0-2.693-1.14-5.25-3.21-7.322Zm-7.316 14.81c-1.646 0-3.21-.498-4.542-1.383L5.27 19.82l.763-1.25a7.94 7.94 0 0 1-1.29-4.19c0-4.38 3.553-7.933 7.934-7.933c2.126 0 4.12.825 5.61 2.316c1.49 1.49 2.315 3.484 2.315 5.61c0 4.38-3.554 7.933-7.933 7.933Zm4.79-6.383c-.26-.13-.77-.38-1.04-.504c-.27-.125-.523-.195-.777.13c-.254.325-.87.975-.98 1.105c-.11.13-.22.145-.435.015c-.214-.13-1.165-.45-2.02-1.12c-.665-.52-1.12-1.13-.19-1.385c.93-.255.93-.255 1.145-.48c.214-.225.27-.39.33-.525c.06-.13.03-.24 0-.375c-.03-.135-.778-1.875-1.01-2.505c-.23-.63-.46-.525-.6-.525c-.14 0-.315 0-.49 0c-.175 0-.435.06-.66.3c-.225.24-.87.84-1.04 2.02c-.17 1.18.3 2.345.87 3.255c.57.91 1.73 2.29 4.11 3.2c2.38.91 2.685.81 3.12.715c.435-.09.77-.375.87-.72c.1-.345.1-.66.045-.79c-.055-.13-.225-.21-.48-.34Z"/>
                             </svg>
-                            <a href="https://wa.me/6281224178271" target="_blank" rel="noopener noreferrer" class="text-xl text-gray-200 hover:text-white hover:underline transition-colors">+62 812-2417-8271</a>
+                            <a href="https://wa.me/6281224178271" target="_blank" rel="noopener noreferrer" class="text-lg md:text-xl text-gray-200 hover:text-white hover:underline transition-colors">+62 812-2417-8271</a>
                         </div>
                         
                         <!-- Email -->
                         <div class="flex items-center gap-4">
                             <!-- Ikon Email (Inline SVG) -->
-                            <svg class="w-8 h-8 text-primary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <svg class="w-10 h-10 md:w-8 md:h-8 text-primary-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            <a href="mailto:ho031.hadi@gmail.com" class="text-xl text-gray-200 hover:text-white hover:underline transition-colors">ho031.hadi@gmail.com</a>
+                            <a href="mailto:ho031.hadi@gmail.com" class="text-lg md:text-xl text-gray-200 hover:text-white hover:underline transition-colors">ho031.hadi@gmail.com</a>
                         </div>
                     </div>
                 </div>
@@ -723,15 +864,20 @@
     </main>
 
     <!-- ===== BARU: HTML UNTUK IMAGE MODAL ===== -->
-    <div id="image-modal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-[100] items-center justify-center p-4 transition-opacity duration-300">
+    <div id="image-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-[100] items-center justify-center p-6 transition-opacity duration-300">
         <!-- Modal Content -->
-        <div class="relative bg-card p-3 md:p-4 rounded-lg shadow-lg max-w-3xl max-h-[90vh]">
-            <!-- Close Button -->
-            <button id="modal-close" class="absolute -top-4 -right-4 bg-primary-accent text-white rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold z-[101] transition-transform hover:scale-110">&times;</button>
+        <div class="relative bg-card p-6 rounded-lg shadow-lg max-w-3xl max-h-[70vh] md:max-h-[90vh] w-full">
+            <!-- Close Button - Mobile Friendly -->
+            <button id="modal-close" class="absolute top-4 -right-4 sm:-top-4 sm:-right-4 bg-primary-accent text-white rounded-full w-12 h-12 sm:w-10 sm:h-10 flex items-center justify-center text-2xl font-bold z-[101] transition-transform hover:scale-110 touch-manipulation">×</button>
             <!-- Image -->
-            <img id="modal-img" src="" alt="Poster Pop-up" class="w-full h-full object-contain max-h-[85vh] rounded">
+            <img id="modal-img" src="" alt="Poster Pop-up" class="w-full h-full object-contain max-h-[60vh] md:max-h-[85vh] rounded">
         </div>
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary-accent text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold z-50 transition-all duration-300 hover:scale-110 touch-manipulation opacity-0 pointer-events-none">
+        ↑
+    </button>
 
     <!-- Footer -->
     <footer class="bg-card mt-20">
@@ -742,11 +888,51 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu
+            // Mobile Menu with Smooth Animation
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
-            menuToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+            
+            menuToggle.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    // Trigger animation after removing hidden class
+                    setTimeout(() => {
+                        mobileMenu.classList.remove('opacity-0', 'translate-y-[-10px]');
+                        mobileMenu.classList.add('opacity-100', 'translate-y-0');
+                    }, 10);
+                } else {
+                    mobileMenu.classList.add('opacity-0', 'translate-y-[-10px]');
+                    mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+                    // Hide after animation completes
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            });
+            
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('opacity-0', 'translate-y-[-10px]');
+                    mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                });
+            });
+
+            // Flip Cards - Mobile Tap Functionality
+            const flipCards = document.querySelectorAll('.flip-card-container');
+            flipCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Check if device supports hover (desktop)
+                    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        return; // Let CSS hover handle it
+                    }
+                    // Mobile tap functionality
+                    card.classList.toggle('flipped');
+                });
+            });
 
             // Accordion Logic (handles both timeline and budget)
             const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -850,6 +1036,49 @@
                 });
             }
             // ===== AKHIR: Image Modal Logic =====
+
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                // Show/hide button based on scroll position
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                        backToTopBtn.classList.add('opacity-100');
+                    } else {
+                        backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                        backToTopBtn.classList.remove('opacity-100');
+                    }
+                });
+
+                // Smooth scroll to top
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Haptic feedback for mobile
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                });
+            }
+
+            // Haptic feedback for flip cards on mobile
+            flipCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Check if device supports hover (desktop)
+                    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        return; // Let CSS hover handle it
+                    }
+                    // Mobile tap functionality with haptic feedback
+                    card.classList.toggle('flipped');
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                });
+            });
 
         });
     </script>
