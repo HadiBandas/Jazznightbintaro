@@ -921,20 +921,31 @@
                 });
             });
 
-            // Flip Cards - Mobile Tap Functionality
+            // =================================================================
+            // PERBAIKAN: Flip Cards - Mobile Tap Functionality (Gabungan)
+            // =================================================================
             const flipCards = document.querySelectorAll('.flip-card-container');
             flipCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Check if device supports hover (desktop)
+                card.addEventListener('click', () => {
+                    // Cek jika device mendukung hover (desktop), biarkan CSS :hover yang bekerja
                     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                        return; // Let CSS hover handle it
+                        return;
                     }
-                    // Mobile tap functionality
+                    
+                    // Fungsionalitas untuk mobile (tap)
+                    // 1. Toggle kelas 'flipped' untuk memicu animasi
                     card.classList.toggle('flipped');
+                    
+                    // 2. Beri getaran haptic jika didukung
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
                 });
             });
+            // =================================================================
+            // AKHIR PERBAIKAN
+            // =================================================================
+
 
             // Accordion Logic (handles both timeline and budget)
             const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -945,7 +956,7 @@
 
                     // Optional: Close other accordions in the same section when one is opened
                     if (header.closest('#anggaran') || header.closest('#jadwal')) {
-                        const parent = header.closest('.space-y-4'); // Selector for container
+                        const parent = header.closest('.space-y-4') || header.closest('.space-y-6'); // Selector for container
                         if (parent) {
                             parent.querySelectorAll('.accordion-header.active').forEach(activeHeader => {
                                 if (activeHeader !== header) {
@@ -964,7 +975,8 @@
             // Open the first accordion item by default in the timeline section only
             const firstTimelineAccordion = document.querySelector('#jadwal .accordion-header');
              if (firstTimelineAccordion) {
-                firstTimelineAccordion.click();
+                // Perlu sedikit delay agar 'click' ter-register setelah setup
+                setTimeout(() => firstTimelineAccordion.click(), 100);
              }
 
             // Scroll Reveal Animation
@@ -1067,20 +1079,8 @@
                 });
             }
 
-            // Haptic feedback for flip cards on mobile
-            flipCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    // Check if device supports hover (desktop)
-                    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                        return; // Let CSS hover handle it
-                    }
-                    // Mobile tap functionality with haptic feedback
-                    card.classList.toggle('flipped');
-                    if (navigator.vibrate) {
-                        navigator.vibrate(30);
-                    }
-                });
-            });
+            // Hapus blok 'Haptic feedback' yang duplikat
+            // Blok tersebut sudah digabung ke dalam listener flip-card utama di atas.
 
         });
     </script>
