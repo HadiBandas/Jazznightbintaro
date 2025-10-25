@@ -924,7 +924,9 @@
             // Flip Cards - Mobile Tap Functionality
             const flipCards = document.querySelectorAll('.flip-card-container');
             flipCards.forEach(card => {
-                card.addEventListener('click', () => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     // Check if device supports hover (desktop)
                     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                         return; // Let CSS hover handle it
