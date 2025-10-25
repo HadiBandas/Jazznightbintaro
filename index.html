@@ -131,64 +131,77 @@
             box-shadow: 0 0 25px rgba(253, 199, 0, 0.4);
         }
 
-        /* Flip Cards - Mobile Friendly */
-        const flipCards = document.querySelectorAll('.flip-card-container');
-            flipCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-        }
-        .flip-card {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        /* Desktop hover effect */
-        @media (hover: hover) and (pointer: fine) {
-            .flip-card-container:hover .flip-card {
-                transform: rotateY(180deg);
-            }
-        }
-        /* Mobile tap effect */
-        .flip-card-container.flipped .flip-card {
-            transform: rotateY(180deg);
-        }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 1rem;
-            border: 1px solid #6A00B0;
-            background-color: #4C0080;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .flip-card-back {
-            transform: rotateY(180deg);
-        }
-        /* Mobile tap indicator */
-        @media (max-width: 768px) {
-            .flip-card-container::after {
-                content: 'Tap to flip';
-                position: absolute;
-                bottom: -25px;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 0.75rem;
-                color: #FDC700;
-                opacity: 0.7;
-                pointer-events: none;
-            }
-        }
+   /* Flip Cards - Mobile Friendly */
+.flip-card-container {
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+    touch-action: manipulation;
+}
+.flip-card {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+/* Desktop hover effect */
+@media (hover: hover) and (pointer: fine) {
+    .flip-card-container:hover .flip-card {
+        transform: rotateY(180deg);
+    }
+}
+/* Mobile tap effect */
+.flip-card-container.flipped .flip-card {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 1rem;
+    border: 1px solid #6A00B0;
+    background-color: #4C0080;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+/* Mobile tap indicator */
+@media (max-width: 768px) {
+    .flip-card-container {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    .flip-card-container::after {
+        content: 'Tap to flip';
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.75rem;
+        color: #FDC700;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    /* Visual feedback on tap */
+    .flip-card-container:active {
+        opacity: 0.9;
+    }
+}
         
         /* Accordion styles (untuk Jadwal & Anggaran) */
         .accordion-header { 
@@ -924,17 +937,77 @@
             });
 
             // Flip Cards - Mobile Tap Functionality
-            const flipCards = document.querySelectorAll('.flip-card-container');
-            flipCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    // Check if device supports hover (desktop)
-                    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                        return; // Let CSS hover handle it
-                    }
-                    // Mobile tap functionality
-                    card.classList.toggle('flipped');
-                });
-            });
+            /* Flip Cards - Mobile Friendly */
+.flip-card-container {
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+    touch-action: manipulation;
+}
+.flip-card {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+/* Desktop hover effect */
+@media (hover: hover) and (pointer: fine) {
+    .flip-card-container:hover .flip-card {
+        transform: rotateY(180deg);
+    }
+}
+/* Mobile tap effect */
+.flip-card-container.flipped .flip-card {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 1rem;
+    border: 1px solid #6A00B0;
+    background-color: #4C0080;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+/* Mobile tap indicator */
+@media (max-width: 768px) {
+    .flip-card-container {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    .flip-card-container::after {
+        content: 'Tap to flip';
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.75rem;
+        color: #FDC700;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    /* Visual feedback on tap */
+    .flip-card-container:active {
+        opacity: 0.9;
+    }
+}
 
             // Accordion Logic (handles both timeline and budget)
             const accordionHeaders = document.querySelectorAll('.accordion-header');
