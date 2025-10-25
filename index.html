@@ -132,9 +132,11 @@
         }
 
         /* Flip Cards - Mobile Friendly */
-        .flip-card-container {
-            perspective: 1000px;
-            cursor: pointer;
+        const flipCards = document.querySelectorAll('.flip-card-container');
+            flipCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
         }
         .flip-card {
             position: relative;
